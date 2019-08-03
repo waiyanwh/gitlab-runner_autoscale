@@ -8,7 +8,7 @@ check_interval = 0
   name = "Autoscale runner"
   limit = 8
   url = "https//gitlab.com/"
-  token = < YOUR TOKEN >
+  token = YOUR TOKEN HERE
   executor = "docker+machine"
   [runners.custom_build_dir]
   [runners.docker]
