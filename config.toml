@@ -1,0 +1,41 @@
+concurrent = 4
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "Autoscale runner"
+  limit = 8
+  url = "https//gitlab.com/"
+  token = < YOUR TOKEN >
+  executor = "docker+machine"
+  [runners.custom_build_dir]
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = true
+    volumes = ["/cache"]
+    shm_size = 0
+  [runners.cache]
+    Type = "s3"
+    Shared = true
+    [runners.cache.s3]
+      ServerAddress = "s3.amazonaws.com"
+      AccessKey = "<your AWS Access Key ID>"
+      SecretKey = "<your AWS Secret Access Key>"
+      BucketName = "<the bucket where your cache should be kept>"
+      BucketLocation = "ap-southeast-1"
+    [runners.cache.gcs]
+  [runners.machine]
+    IdleCount = 0
+    IdleTime = 60
+    MachineDriver = "amazonec2"
+    MachineName = "gitlab-docker-machine-%s"
+    MachineOptions = ["amazonec2-region=ap-southeast-1", "amazonec2-vpc-id=XXXX", "amazonec2-subnet-id=XXXX", "amazonec2-zone=XXXX", "amazonec2-use-private-address=true", "amazonec2-tags=runner-manager-name,gitlab-aws-autoscaler,gitlab,true,gitlab-runner-autoscale,true", "amazonec2-security-group=docker-machine-scaler", "amazonec2-instance-type=m4.large", "amazonec2-request-spot-instance=true", "amazonec2-spot-price=0.04"]
+    OffPeakTimezone = ""
+    OffPeakIdleCount = 0
+    OffPeakIdleTime = 1200
